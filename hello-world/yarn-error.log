@@ -1,0 +1,48 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js init
+
+PATH: 
+  C:\Users\ThinhDD - LA\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\ThinhDD - LA\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Skype\Phone;C:\Program Files\Git\cmd;C:\Program Files\nodejs;E:\xampp\php;C:\ProgramData\ComposerSetup\bin;E:\apache-maven-3.3.9-bin\apache-maven-3.3.9\bin;C:\Program Files\Java\jdk1.7.0_79\bin;C:\Program Files (x86)\Brackets\command;C:\Program Files (x86)\Yarn\bin;C:\Users\ThinhDD - LA\AppData\Roaming\npm;C:\Users\ThinhDD - LA\AppData\Roaming\Composer\vendor\bin;C:\Users\ThinhDD - LA\AppData\Local\Microsoft\WindowsApps;C:\Users\ThinhDD - LA\AppData\Local\Yarn\.bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  0.17.10
+
+Node version: 
+  6.9.1
+
+Platform: 
+  win32 x64
+
+npm manifest: 
+  {
+    "name": "hello-world",
+    "version": "0.1.0",
+    "private": true,
+    "devDependencies": {
+      "react-scripts": "0.8.5"
+    },
+    "dependencies": {
+      "react": "^15.4.2",
+      "react-dom": "^15.4.2"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test --env=jsdom",
+      "eject": "react-scripts eject"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Can't answer a question unless a user TTY
+      at ConsoleReporter.question (C:\Program Files (x86)\Yarn\lib\reporters\console\console-reporter.js:192:29)
+      at Object.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli\commands\init.js:105:38)
+      at next (native)
+      at step (C:\Program Files (x86)\Yarn\node_modules\babel-runtime\helpers\asyncToGenerator.js:17:30)
+      at C:\Program Files (x86)\Yarn\node_modules\babel-runtime\helpers\asyncToGenerator.js:28:13
