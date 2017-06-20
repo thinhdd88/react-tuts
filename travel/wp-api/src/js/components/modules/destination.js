@@ -23,11 +23,11 @@ import {Link } from 'react-router';
 const Destination = ({data}) => (
 	<li className="col-md-4 col-xs-6 hover-effect item">
 		<figure className="effect-lily">
-			<img src={data.acf.image} alt={data.name} />
+			<img src={data.acf.main_image} alt={data.name} />
 			<figcaption>
 				<div>
-					<h2>{data.name}</h2>
-					<p className="description" dangerouslySetInnerHTML={ {__html: data.description} } />
+					<h2>{data.title.rendered}</h2>
+					<p className="description" dangerouslySetInnerHTML={ {__html: data.acf.short_description} } />
 				</div>
 	            <Link className="nav-link" to={'/destination/' + data.slug} >View more</Link>
 			</figcaption>			

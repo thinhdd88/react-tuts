@@ -13,14 +13,14 @@ class NavPages extends React.Component {
   getPages(){
       var url = 'http://localhost/tut/reactjs/travel/wp-site/wp-json/wp/v2/pages/?fields=id,slug,title,menu_order';
       fetch(url)
-        .then((res) => res.json())
+        .then((res) => {
+          return res.json();
+        })
         .then((data) => {
             data.sort(sortPage);
             this.setState({
               pages: data
-            })
-
-            console.log(data);
+        })
       })
   }
 

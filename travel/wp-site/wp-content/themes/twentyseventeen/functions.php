@@ -526,6 +526,8 @@ function twentyseventeen_post_thumbnail_sizes_attr( $attr, $attachment, $size ) 
 }
 add_filter( 'wp_get_attachment_image_attributes', 'twentyseventeen_post_thumbnail_sizes_attr', 10, 3 );
 
+add_filter( 'rest_allow_anonymous_comments', '__return_true' );
+
 /**
  * Use front-page.php when Front page displays is set to a static page.
  *

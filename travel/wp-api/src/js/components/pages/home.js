@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ListDestination from '../modules/listDestination';
+import _ from 'lodash';
 
 class Home extends Component {
 
@@ -29,7 +30,7 @@ class Home extends Component {
     } // end function
 
     getDes() {
-        var url = `http://localhost/tut/reactjs/travel/wp-site/wp-json/wp/v2/destinations/?fields=slug,name,description,acf.image`;
+        var url = `http://localhost/tut/reactjs/travel/wp-site/wp-json/wp/v2/destinations/?fields=id,slug,title.rendered,content,acf`;
         this.fetchApi(url);
     }
 
@@ -92,6 +93,7 @@ class Home extends Component {
     }
 
     render() {
+        _.forEach(this.state.data, function(e, i) { if(!e.originalIndex) e.originalIndex = i; });
         return ( 
         	<div className="page-wrapper">
         		<ListDestination list={this.state.data}/>
