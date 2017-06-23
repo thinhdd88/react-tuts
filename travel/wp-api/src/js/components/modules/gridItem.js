@@ -20,20 +20,20 @@ import {Link } from 'react-router';
 // 	}
 // }
 
-const Destination = ({data}) => (
-	<li className="col-md-4 col-xs-6 hover-effect item">
+const GridItem = ({image, title, shortDescription, url, classNames, handleClick}) => (
+	<li className={classNames} onClick={handleClick} >
 		<figure className="effect-lily">
-			<img src={data.acf.main_image} alt={data.name} />
+			<img className="img-responsive" src={image} alt={title} />
 			<figcaption>
 				<div>
-					<h2>{data.title.rendered}</h2>
-					<p className="description" dangerouslySetInnerHTML={ {__html: data.acf.short_description} } />
+					<h2>{title}</h2>
+					{shortDescription && (<p className="description" dangerouslySetInnerHTML={ {__html: shortDescription} } />)}
 				</div>
-	            <Link className="nav-link" to={'/destination/' + data.slug} >View more</Link>
+				{url && (<Link className="nav-link" to={url} >View more</Link>)}
 			</figcaption>			
 		</figure>
 	</li>
 )
 
-export default Destination;
+export default GridItem;
 

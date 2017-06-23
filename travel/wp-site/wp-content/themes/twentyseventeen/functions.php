@@ -17,6 +17,11 @@ if ( version_compare( $GLOBALS['wp_version'], '4.7-alpha', '<' ) ) {
 	return;
 }
 
+register_rest_field( 'destinations', 'metadata', array(
+	'get_callback' => function ( $data ) {
+		return get_post_meta( $data['id'], '', '' );
+	}, ));
+
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *

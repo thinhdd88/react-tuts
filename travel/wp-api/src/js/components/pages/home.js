@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import ListDestination from '../modules/listDestination';
+import Destinations from '../modules/destinations';
 import _ from 'lodash';
 
 class Home extends Component {
@@ -96,7 +96,7 @@ class Home extends Component {
         _.forEach(this.state.data, function(e, i) { if(!e.originalIndex) e.originalIndex = i; });
         return ( 
         	<div className="page-wrapper">
-        		<ListDestination list={this.state.data}/>
+        		<Destinations list={this.state.data}/>
         	</div> 
         );
     }

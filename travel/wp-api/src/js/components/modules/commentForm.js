@@ -4,82 +4,90 @@ import validation from 'react-validation-mixin';
 import strategy from 'joi-validation-strategy';
 import classnames from 'classnames';
 
+// Material UI
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {deepOrange500, orange500} from 'material-ui/styles/colors';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import Dialog from 'material-ui/Dialog';
+
+// Needed for onTouchTap 
+// http://stackoverflow.com/a/34015469/988941 
+injectTapEventPlugin();
+
+const muiTheme = getMuiTheme({
+  palette: {
+    accent1Color: deepOrange500,
+  },
+});
+
+const styles = {
+  underlineStyle: {
+    borderColor: orange500,
+  },
+  floatingLabelStyle: {
+    color: orange500,
+  },
+  floatingLabelFocusStyle: {
+    color: orange500,
+  },
+};
+
+
 class CommentForm extends Component {
 	constructor(props) {
 		super(props);
-    this.validatorTypes = {
-      author_email: Joi.string().required().email().label('Email'),
-      author_name: Joi.string().required().label('User Name'),
-      content: Joi.string().required().label('Content')
-    };
-    this.getValidatorData = this.getValidatorData.bind(this);
-    this.renderHelpText = this.renderHelpText.bind(this);
-    this.getClasses = this.getClasses.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onSubmit    = this.onSubmit.bind(this);
+    this.changeValue = this.changeValue.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
+    
     this.state = {
-      errorMessage: ''
+      post: this.props.postId,
+      errorMessage: '',
+      open: false
     }
 	}
 
-  getValidatorData() {
-    return {
-      author_email: this.refs.author_email.value,
-      author_name: this.refs.author_name.value,
-      content: this.refs.content.value,
-      post: this.props.id
-    };
-  }
-
-  renderHelpText(message) {
-    return (
-     <ul className='help-block list-unstyled'>
-       {message.map(function(text, key) {
-          return (
-              <li key={key}>{text}</li>
-            )
-        })}
-     </ul>
-    );
-  }
-
-  getClasses(field) {
-    return classnames({
-      'form-group': true,
-      'has-error': !this.props.isValid(field)
-    });
-  }
-
   onSubmit(event) {
     event.preventDefault();
-    const onValidate = (error) => {
-      if (error) {
-      } else {
-        this.addComment();
-        this.refs.commentForm.reset();
-      }
-    };
-    this.props.validate(onValidate);
+    this.addComment();
+  }
+
+  changeValue(e, type) {
+    const value = e.target.value;
+    const nextState = {};
+    nextState[type] = value;
+    this.setState(nextState);
   }
 
   addComment(){
-    console.log(this.getValidatorData());
+    console.log(this.props);
     let url = `http://localhost/tut/reactjs/travel/wp-site/wp-json/wp/v2/comments`;
-    fetch(url, { 
+    fetch(url, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.getValidatorData())
+        body: JSON.stringify(this.state)
       })
       .then((res) => {
           console.log(res);
+          console.log(this.refs);
+          if(res.ok == true)
+            this.refs.commentForm.reset();
+
           return res.json();
       })
       .then((data) => {
           if(data.message){
             this.setState({
-              errorMessage: data.message
+              errorMessage: data.message,
+              open: true
             })
           }
       })
@@ -88,45 +96,82 @@ class CommentForm extends Component {
       });
   }
 
+  handleRequestClose() {
+    this.setState({
+      open: false,
+    });
+  }
+
 	render() {
+    const { author_name, author_email, content  } = this.state;
+
+    const standardActions = (
+      <RaisedButton
+        label="Ok"
+        primary={true}
+        onTouchTap={this.handleRequestClose}
+      />
+    );
+
 		return(
-			 <form ref="commentForm" onSubmit={this.onSubmit}>
-        <div className={this.getClasses('author_name')}>
-          <label htmlFor='author_name'>User Name</label>
-          <input
-            ref='author_name'
-            type='text'
-            className='form-control'
-            placeholder='User Name'
-            onBlur={this.props.handleValidation('author_name')}
-          />
-          {this.renderHelpText(this.props.getValidationMessages('username'))}
-        </div>
-        <div className={this.getClasses('author_email')}>
-          <label htmlFor='author_email'>Email</label>
-          <input
-            ref='author_email'
-            type='text'
-            className='form-control'
-            placeholder='Email'
-            onBlur={this.props.handleValidation('author_email')}
-          />
-          {this.renderHelpText(this.props.getValidationMessages('author_email'))}
-        </div>
-        <div className={this.getClasses('content')}>
-          <label htmlFor='content'>Comment</label>
-          <textarea
-            ref='content'
-            className='form-control'
-            placeholder=''
-            onBlur={this.props.handleValidation('content')}
-          >
-          </textarea>
-          {this.renderHelpText(this.props.getValidationMessages('content'))}
-        </div>
-        <button type="submit">asdda</button>
-        <div className="error" dangerouslySetInnerHTML={ {__html: this.state.errorMessage} } />
-      </form>
+       <MuiThemeProvider muiTheme={muiTheme}>
+          <ValidatorForm ref="commentForm" onSubmit={this.onSubmit}>
+
+          <div className="">
+            <TextValidator
+                  ref="author_name"
+                  floatingLabelText="Author Name"
+                  name="author_name"
+                  value={author_name}
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                  onChange={e => this.changeValue(e, 'author_name')}
+            />
+          </div>
+
+          <div className=""> 
+            <TextValidator
+                  ref="author_email"
+                  floatingLabelText="Email"
+                  name="author_email"
+                  value={author_email}
+                  validators={['required', 'isEmail']}
+                  errorMessages={['this field is required', 'email is not valid']}
+                  onChange={e => this.changeValue(e, 'author_email')}
+            />
+          </div>
+
+          <div className=""> 
+            <TextValidator
+                  ref="content"
+                  floatingLabelText="Message"
+                  name="content"
+                  value={content}
+                  multiLine={true}
+                  rows={2}
+                  rowsMax={4}
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                  onChange={e => this.changeValue(e, 'content')}
+            />
+          </div>
+
+            <RaisedButton
+                label="Submit"
+                secondary={true}
+                type = "submit"
+            />
+
+            <Dialog
+              open={this.state.open}
+              actions={standardActions}
+              onRequestClose={this.handleRequestClose}
+            >
+              <div className="error" dangerouslySetInnerHTML={ {__html: this.state.errorMessage} } />
+            </Dialog>
+
+          </ValidatorForm>
+        </MuiThemeProvider>
 		)
 	}
 };

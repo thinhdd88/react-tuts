@@ -79,11 +79,12 @@ gulp.task('server', function() {
 });
 
 gulp.task('bundle', ['js', 'styles', 'html', 'fonts', 'vendor']);
+gulp.task('bundle', ['js', 'styles', 'html']);
 
 gulp.task('watch', gulpsync.sync(['bundle', 'server']), function () {
 	gulp.watch(['./src/js/**/*.js'], ['js']);
 	gulp.watch(['./src/less/**/*.less'], ['styles']);
-	gulp.watch(['./src//*.html'], ['html']);
+	gulp.watch(['./src/*.html'], ['html']);
 });
 
 gulp.task('default', ['watch']);
