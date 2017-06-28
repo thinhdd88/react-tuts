@@ -1,23 +1,19 @@
 import React, {Component, PropTypes, findDOMNode} from 'react';
-import Joi from 'joi';
-import validation from 'react-validation-mixin';
-import strategy from 'joi-validation-strategy';
-import classnames from 'classnames';
+
+// Validate form
+// import Joi from 'joi';
+// import validation from 'react-validation-mixin';
+// import strategy from 'joi-validation-strategy';
+// import classnames from 'classnames';
 
 // Material UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {deepOrange500, orange500} from 'material-ui/styles/colors';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Dialog from 'material-ui/Dialog';
-
-// Needed for onTouchTap 
-// http://stackoverflow.com/a/34015469/988941 
-injectTapEventPlugin();
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -117,50 +113,52 @@ class CommentForm extends Component {
        <MuiThemeProvider muiTheme={muiTheme}>
           <ValidatorForm ref="commentForm" onSubmit={this.onSubmit}>
 
-          <div className="">
-            <TextValidator
-                  ref="author_name"
-                  floatingLabelText="Author Name"
-                  name="author_name"
-                  value={author_name}
-                  validators={['required']}
-                  errorMessages={['this field is required']}
-                  onChange={e => this.changeValue(e, 'author_name')}
-            />
-          </div>
+            <div className="">
+              <TextValidator
+                    ref="author_name"
+                    floatingLabelText="Author Name"
+                    name="author_name"
+                    value={author_name}
+                    validators={['required']}
+                    errorMessages={['this field is required']}
+                    onChange={e => this.changeValue(e, 'author_name')}
+              />
+            </div>
 
-          <div className=""> 
-            <TextValidator
-                  ref="author_email"
-                  floatingLabelText="Email"
-                  name="author_email"
-                  value={author_email}
-                  validators={['required', 'isEmail']}
-                  errorMessages={['this field is required', 'email is not valid']}
-                  onChange={e => this.changeValue(e, 'author_email')}
-            />
-          </div>
+            <div className=""> 
+              <TextValidator
+                    ref="author_email"
+                    floatingLabelText="Email"
+                    name="author_email"
+                    value={author_email}
+                    validators={['required', 'isEmail']}
+                    errorMessages={['this field is required', 'email is not valid']}
+                    onChange={e => this.changeValue(e, 'author_email')}
+              />
+            </div>
 
-          <div className=""> 
-            <TextValidator
-                  ref="content"
-                  floatingLabelText="Message"
-                  name="content"
-                  value={content}
-                  multiLine={true}
-                  rows={2}
-                  rowsMax={4}
-                  validators={['required']}
-                  errorMessages={['this field is required']}
-                  onChange={e => this.changeValue(e, 'content')}
-            />
-          </div>
+            <div className=""> 
+              <TextValidator
+                    ref="content"
+                    floatingLabelText="Message"
+                    name="content"
+                    value={content}
+                    multiLine={true}
+                    rows={2}
+                    rowsMax={4}
+                    validators={['required']}
+                    errorMessages={['this field is required']}
+                    onChange={e => this.changeValue(e, 'content')}
+              />
+            </div>
 
-            <RaisedButton
-                label="Submit"
-                secondary={true}
-                type = "submit"
-            />
+            <div className="buttons">
+              <RaisedButton
+                  label="Submit"
+                  secondary={true}
+                  type = "submit"
+              />
+            </div>
 
             <Dialog
               open={this.state.open}
@@ -188,4 +186,4 @@ class CommentForm extends Component {
 //   clearValidations: PropTypes.func,
 // };
 
-export default validation(strategy)(CommentForm);
+export default CommentForm;

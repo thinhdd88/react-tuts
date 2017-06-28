@@ -4,38 +4,8 @@ import Destinations from '../modules/destinations';
 import _ from 'lodash';
 
 class Home extends Component {
-
     constructor(props) {
         super(props);
-        this.state = {
-            data: [] // set initital load movie - Interstellar
-        }
-    }
-
-    fetchApi(url) {
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => {
-                // update state with API data
-                let attr = [];
-
-                if(Array.isArray(data)){
-                	attr = data;
-                } else {
-                	attr.push(data);
-                }
-
-                this.setState({data: attr});
-        })
-    } // end function
-
-    getDes() {
-        var url = `http://localhost/tut/reactjs/travel/wp-site/wp-json/wp/v2/destinations/?fields=id,slug,title.rendered,content,acf`;
-        this.fetchApi(url);
-    }
-
-    componentWillMount() {
-        this.getDes();
     }
 
     _componentDidUpdate() {
@@ -93,10 +63,9 @@ class Home extends Component {
     }
 
     render() {
-        _.forEach(this.state.data, function(e, i) { if(!e.originalIndex) e.originalIndex = i; });
         return ( 
         	<div className="page-wrapper">
-        		<Destinations list={this.state.data}/>
+        		<Destinations />
         	</div> 
         );
     }

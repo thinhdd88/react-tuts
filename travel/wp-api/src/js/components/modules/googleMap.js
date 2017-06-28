@@ -28,7 +28,8 @@ const LocationGoogleMap = withGoogleMap(props => (
               // e.showInfo && (
               // <InfoWindow>
               //   <div>asdasd sadasdasd</div>
-              // </InfoWindow>)
+              // </InfoWindow>
+              //)
             }
           </Marker>
         );

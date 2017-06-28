@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import DestinationDetail from '../modules/destinationDetail';
+import Destination from '../modules/destination';
 
-class Destination extends Component {
+class DestinationPage extends Component {
 
     constructor(props) {
         super(props);
@@ -11,7 +11,7 @@ class Destination extends Component {
     }
 
     getDestination(slug) {
-    	$('.ts-spinner').fadeIn(300);
+        $('.ts-spinner').fadeIn(300);
         var url = `http://localhost/tut/reactjs/travel/wp-site/wp-json/wp/v2/destinations/?slug=${slug}`;
         fetch(url)
             .then((res) => res.json())
@@ -35,16 +35,17 @@ class Destination extends Component {
     }
 
     render() {
-    	if(this.state.destination[0]){
-    		return ( 
-	        	<DestinationDetail detail={this.state.destination[0]} /> 
-	    	);
-    	} 
-    	else{
-    		return false;
-    	}
+        console.log(this.state.destination);
+        if(this.state.destination[0]){
+            return ( 
+                <Destination detail={this.state.destination[0]} /> 
+            );
+        } 
+        else{
+            return false;
+        }
         
     }
 }
 
-export default Destination;
+export default DestinationPage;

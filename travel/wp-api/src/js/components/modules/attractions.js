@@ -23,7 +23,7 @@ class Attractions extends Component {
 				   this.getLatLng(value.name);
 				});
         	})
-    } // end function
+    }
 
     getAttractions() {
 	    var url = `http://localhost/tut/reactjs/travel/wp-site/wp-json/wp/v2/attractions/?fields=id,slug,name,acf`;
@@ -35,31 +35,31 @@ class Attractions extends Component {
     }
 
 	// Not need function if have Lat Lng on API data
-    getLatLng(name, center = false, index){
+    getLatLng(name, updateMapCenter = false, index){
 		const geocoder = new google.maps.Geocoder();
 		var marker = '';
-        geocoder.geocode( { 'address': name + ', Da Nang' }, (results, status) => {
+        geocoder.geocode( { 'address': name + ', ' + this.props.destination }, (results, status) => {
             if (status == google.maps.GeocoderStatus.OK) {
                 var latlng = results[0].geometry.location;
                 marker = latlng.toJSON();
-                if(!center) {
+                if(!updateMapCenter) {
+                	// Update map center when click attracton
                 	this.setState(function(prevState, props) {
 	                	prevState.markers.push(marker);
 					});
                 } else {
-
-                	// Update map center, map zoom
-                	// Show marker Info box
-                	this.setState({
-                		center: {lat: marker.lat, lng: marker.lng},
-                		zoom: 13,
-                		markers: this.state.markers.map( (marker, key) => {
-					        if (key == index) {
-					        	marker.showInfo = true;
-					        }
-					        return marker;
-				      	}),
-                	});
+            	// Update map center, map zoom
+            	// Show marker Info box
+            	this.setState({
+            		center: {lat: marker.lat, lng: marker.lng},
+            		zoom: 13,
+            		markers: this.state.markers.map( (marker, key) => {
+				        if (key == index) {
+				        	marker.showInfo = true;
+				        }
+				        return marker;
+			      	}),
+            	});
                 }
             }
             else {
@@ -69,7 +69,6 @@ class Attractions extends Component {
     }
 
 	render() {
-		console.log(this.state.data);
 		return(
 			<div>
 				<LocationGoogleMap

@@ -3,39 +3,58 @@ import _ from 'lodash';
 import GridItem from './gridItem.js';
 
 // Material UI
-import {orange500} from 'material-ui/styles/colors';
+import {orange400} from 'material-ui/styles/colors';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
+import {List, ListItem} from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
+import Avatar from 'material-ui/Avatar';
 
 const Masonry = require('react-masonry-component');
 const styles = {
   color: {
-    color: orange500,
+    color: orange400,
   },
   underlineStyle: {
-    borderColor: orange500,
+    borderColor: orange400,
   },
   floatingLabelStyle: {
-    color: orange500,
+    color: orange400,
   },
   floatingLabelFocusStyle: {
-    color: orange500,
+    color: orange400,
   },
 };
-
 
 class Destinations extends Component {
 	constructor(props) {
 	   	super(props);
 	   	this.state = {
         searchString: '',
-        searchFocus: false,
-        sort: 0
+        sort: 0,
+        data: []
       };
       this.handleChange = this.handleChange.bind(this);
    }
+
+  fetchApi(url) {
+    fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+            // add property originalIndex for sort
+            _.forEach(data, function(e, i) { if(!e.originalIndex) e.originalIndex = i; });
+
+            // update state with API data
+            this.setState({data: data}); 
+    })
+  } 
+
+  getDes() {
+      var url = `http://localhost/tut/reactjs/travel/wp-site/wp-json/wp/v2/destinations/?fields=id,slug,title.rendered,content,acf`;
+      this.fetchApi(url);
+  }
 
   handleChange(event) {
   	this.setState({searchString: event.target.value});
@@ -47,39 +66,65 @@ class Destinations extends Component {
 
   componentWillMount() {
     $('.ts-spinner').fadeIn(300);
+    this.getDes();
   }
 
   componentDidUpdate() {
+    // Close spinner
     setTimeout(() => {$('.ts-spinner').fadeOut(300)}, 500); 
   }
-   
-  render() {
-  	var searchString = this.state.searchString.trim().toLowerCase();
-    var items = this.props.list;
 
+  sort(array){
     //Sort
     if(this.state.sort == 1) {
-      items.sort(function(a, b){
+      array.sort(function(a, b){
           if(a.title.rendered < b.title.rendered) return -1;
           if(a.title.rendered > b.title.rendered) return 1;
           return 0;
       })
     } else if (this.state.sort == 2){
-      items.sort(function(a, b){
+      array.sort(function(a, b){
           if(a.title.rendered > b.title.rendered) return -1;
           if(a.title.rendered < b.title.rendered) return 1;
           return 0;
       })
     } else {
-      items = _.sortBy(items, "originalIndex");
+      array = _.sortBy(array, "originalIndex");
     }
-    
+    return array;
+  }
+   
+  render() {
+    //console.log(this.state.data);
+  	
+    if(this.props.showAsMenu) {
+      return (
+        <MuiThemeProvider>
+          <List>
+            <Subheader>Destinations</Subheader>
+            {this.state.data.map((item, index) => {
+                return (
+                    <ListItem key={index}
+                      primaryText={item.title.rendered}
+                      leftAvatar={<Avatar src={item.acf.main_image} />}
+                    />
+                 )
+            })} 
+          </List>
+        </MuiThemeProvider>
+      )
+    }
 
-		if(searchString.length > 0){
-			items  = items.filter(function(l){
-				return l.title.rendered.toLowerCase().match(searchString);
-			});
-		}
+
+    var searchString = this.state.searchString.trim().toLowerCase();
+    var items =  this.sort(this.state.data);
+
+    // Update list when search
+    if(searchString.length > 0){
+      items  = items.filter(function(l){
+        return l.title.rendered.toLowerCase().match(searchString);
+      });
+    }
 
     var masonryOptions = {
         transitionDuration: '0.8s'

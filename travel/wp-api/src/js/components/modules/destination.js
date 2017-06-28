@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
-import CommentForm from './CommentForm'
+import CommentForm from './commentForm'
 import Attractions from './attractions'
+import Destinations from './destinations'
 
-const DestinationDetail = ({detail}) => {
-	const geocoder = detail.metadata.martygeocoderlatlng[0].slice(1, -1).split(',');
+const Destination = ({detail}) => {
+	const geocoder = detail.metadata.martygeocoderlatlng && detail.metadata.martygeocoderlatlng[0].slice(1, -1).split(',');
 
-	const position = { 
+	const position = geocoder && { 
 		lat: parseFloat(geocoder[0]), 
 		lng: parseFloat(geocoder[1])
 	}
@@ -22,10 +23,15 @@ const DestinationDetail = ({detail}) => {
 			<div className="container">
 				<div className="row">
 					<div className="col-sm-9 pull-right">
-						<div className="description" dangerouslySetInnerHTML={ {__html: detail.content.rendered} } />
-						<Attractions center={position} />
+						<div className="description" 
+							 dangerouslySetInnerHTML={ {__html: detail.content.rendered} } />
+						<Attractions 
+							destination={detail.title.rendered} 
+							attractions={detail.attractions} 
+							center={position} />
 					</div>
 					<div className="col-sm-3 pull-left">
+						<Destinations showAsMenu={true} />
 						<CommentForm postId={detail.id} />
 					</div>
 				</div>
@@ -34,4 +40,4 @@ const DestinationDetail = ({detail}) => {
 	)
 }
 
-export default DestinationDetail;
+export default Destination;

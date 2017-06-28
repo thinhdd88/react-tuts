@@ -6,10 +6,18 @@ var $ = require('gulp-load-plugins')();
 var LessAutoprefix = require('less-plugin-autoprefix');
 var autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] });
 var gulpsync = require('gulp-sync')(gulp);
+var notifier = require('node-notifier');
 
+// prevent gulp crash when error
 function onError(err) {
-  console.log(err);
-  this.emit('end');
+    console.log(err.stack);
+     
+    notifier.notify({
+      'title': 'Compile Error',
+      'message': err.message
+    });
+
+    this.emit("end")
 }
 
 gulp.task('js', function() {
@@ -19,11 +27,11 @@ gulp.task('js', function() {
     })
     .transform(babelify.configure({
         ignore: /(bower_components)|(node_modules)/,
-        presets: ["es2015", "react"]
+        presets: ["es2015", "react", "stage-0"]
     }))
     //.transform("babelify", {presets: ["es2015", "react"]})
     .bundle()
-    .on("error", function (err) { console.log("Error : " + err.message); })
+    .on('error', onError)
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./public/js'));
 });
@@ -39,6 +47,7 @@ gulp.task('styles', function() {
         .pipe($.less({
 		    	plugins: [autoprefix]
 	  		}))
+        .on('error', onError)
         .pipe($.autoprefixer('last 2 versions'))
         .pipe(gulp.dest('./public/css'))
 });
@@ -78,7 +87,7 @@ gulp.task('server', function() {
     }));
 });
 
-gulp.task('bundle', ['js', 'styles', 'html', 'fonts', 'vendor']);
+//gulp.task('bundle', ['js', 'styles', 'html', 'fonts', 'vendor']);
 gulp.task('bundle', ['js', 'styles', 'html']);
 
 gulp.task('watch', gulpsync.sync(['bundle', 'server']), function () {
