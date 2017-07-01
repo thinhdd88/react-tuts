@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Navigation from '../nav/navigation';
 import Register from '../modules/user/register';
+import Login from '../modules/user/login';
 
 class Header extends Component {
 	render() {
@@ -9,7 +10,10 @@ class Header extends Component {
 				<nav className="navbar navbar-default">
 					<div className="container">
 			            <Navigation />
-		            	<Register />
+			            <ul className="pull-right nav navbar-nav">
+				            <Register />
+			            	<Login />
+			            </ul>
 					</div>
 				</nav>
 	        </header>

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes, findDOMNode} from 'react';
+import React, {Component, findDOMNode} from 'react';
+import PropTypes from 'prop-types'; // ES6 
 
 // Validate form
 // import Joi from 'joi';

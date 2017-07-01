@@ -7,7 +7,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-import Checkbox from 'material-ui/Checkbox';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Dialog from 'material-ui/Dialog';
 import CheckboxValidatorElement from '../forms/checkboxValidatorElement';
@@ -30,7 +29,7 @@ const customContentStyle = {
 		width: 'auto',
 		marginRight: "50px",
 	},
-	radio: {
+	switches: {
 		fill: orange400,
 		marginRight: "5px",
 	},
@@ -55,7 +54,7 @@ class Register extends Component {
 		this.handleOpen  = this.handleOpen.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.state = {
-			open: true,
+			open: false,
 			loginMessage: '',
 			success: false,
 			termAndCondition: false
@@ -182,13 +181,13 @@ class Register extends Component {
 					<RadioButton
 				        value="male"
 				        label="Male"
-				        iconStyle={customContentStyle.radio}
+				        iconStyle={customContentStyle.switches}
 				        style={customContentStyle.gender}
 			      	/>
 			      	<RadioButton
 				        value="female"
 				        label="Female"
-				        iconStyle={customContentStyle.radio}
+				        iconStyle={customContentStyle.switches}
 				        style={customContentStyle.gender}
 			      	/>
 				</RadioButtonGroup>
@@ -226,7 +225,7 @@ class Register extends Component {
 			        value={termAndCondition}
 			        checked={termAndCondition}
 			        style={customContentStyle.checkbox}
-					iconStyle={customContentStyle.radio}
+					iconStyle={customContentStyle.switches}
 					onCheck={e => this.toggleValue(e, termAndCondition, 'termAndCondition')}
 			    />
 
@@ -245,33 +244,31 @@ class Register extends Component {
 	    const message = (<div className={classNames({'text-success': success, 'text-danger': !success })} dangerouslySetInnerHTML={{__html: this.state.loginMessage}} /> );
 
 		return(
-			<ul className="pull-right nav navbar-nav">
-	            <li className="nav-item">
-		            <a onClick={this.handleOpen}>
-						Register
-					</a>
+            <li className="nav-item">
+	            <a onClick={this.handleOpen}>
+					Register
+				</a>
 
-					<MuiThemeProvider muiTheme={muiTheme}>
-						<div>
-							<Dialog
-							  className="register-frm"
-					          title="Create Account"
-					          modal={false}
-					          open={this.state.open}
-					          onRequestClose={this.handleClose}
-					          autoScrollBodyContent={true}
-					          contentStyle={customContentStyle.dialog}
-					          titleStyle={customContentStyle.titleStyle}
-					        >
-					        {message}
-					        { !success && form }  
+				<MuiThemeProvider muiTheme={muiTheme}>
+					<div>
+						<Dialog
+						  className="register-frm"
+				          title="Create Account"
+				          modal={false}
+				          open={this.state.open}
+				          onRequestClose={this.handleClose}
+				          autoScrollBodyContent={true}
+				          contentStyle={customContentStyle.dialog}
+				          titleStyle={customContentStyle.titleStyle}
+				        >
+				        {message}
+				        { !success && form }  
 
-			           		</Dialog>
-		           		</div>
-		    		</MuiThemeProvider>
+		           		</Dialog>
+	           		</div>
+	    		</MuiThemeProvider>
 
-	            </li>
-	        </ul>
+            </li>
 		); 
 	}
 }
